@@ -11,7 +11,6 @@ builder.Services.AddHttpLogging(logging =>
 {
     logging.LoggingFields = HttpLoggingFields.All;
     logging.RequestHeaders.Add("sec-ch-ua");
-    logging.ResponseHeaders.Add("MyResponseHeader");
     logging.MediaTypeOptions.AddText("application/json");
     logging.RequestBodyLogLimit = 4096;
     logging.ResponseBodyLogLimit = 4096;
@@ -21,7 +20,7 @@ builder.Services.AddHttpLogging(logging =>
 var app = builder.Build();
 {
     app.MapControllers();
-
+    app.UseHttpLogging();
     app.UseMiddleware<ApiKeyAuthMiddleware>();
 
     // Configure the HTTP request pipeline.
