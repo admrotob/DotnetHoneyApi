@@ -3,6 +3,7 @@
     public class ApiKeyAuthMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ApiKeyAuthMiddleware> _logger;
 
         public ApiKeyAuthMiddleware(RequestDelegate next)
         {
