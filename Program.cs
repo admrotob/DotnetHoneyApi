@@ -26,5 +26,8 @@ var app = builder.Build();
 
     app.UseAuthorization();
 
+    // Map health check endpoint to allow administrators to deploy in cloud platforms.
+    app.MapGet("/healthz", () => "OK");
+
     app.Run();
 }

@@ -12,7 +12,7 @@
         public async Task Invoke(HttpContext context)
         {
             // Ignore health check requests because they need to be allowed to pass through
-            if (context.Request.Path.StartsWithSegments("/elb-healthz"))
+            if (context.Request.Path.StartsWithSegments("/healthz"))
             {
                 await _next(context);
                 return;
