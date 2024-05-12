@@ -41,7 +41,7 @@ namespace DotnetHoneyApi.Authentication
                     await _next(context);
                     break;
 
-                case "/v1/nodemanagement":
+                case "/nodemanagement":
                     _logger.LogInformation(logJson);
                     await _next(context);
                     break;

@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34701.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetHoneyApi.Tests", "DotnetHoneyApi.Tests\DotnetHoneyApi.Tests.csproj", "{A73407AB-926E-442F-916B-D6F2E7A06F5A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotnetHoneyApi", "DotnetHoneyApi\DotnetHoneyApi.csproj", "{7EE5B24E-71ED-487E-9297-05879CE03BED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A73407AB-926E-442F-916B-D6F2E7A06F5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A73407AB-926E-442F-916B-D6F2E7A06F5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A73407AB-926E-442F-916B-D6F2E7A06F5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EE5B24E-71ED-487E-9297-05879CE03BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EE5B24E-71ED-487E-9297-05879CE03BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EE5B24E-71ED-487E-9297-05879CE03BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EE5B24E-71ED-487E-9297-05879CE03BED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
