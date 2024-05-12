@@ -23,12 +23,8 @@ try
         {
             app.UseDeveloperExceptionPage();
             app.UseHsts();
+            app.UseHttpsRedirection();
         }
-        else
-        {
-            app.UseHsts();
-        }
-        app.UseHttpsRedirection();
 
         app.UseAuthorization();
 
