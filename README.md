@@ -12,6 +12,17 @@ Some key things to note about the project:
 - Requires dotnet 8.0
 - There is a /healthz endpoint that is exposed to allow for deployment in cloud providers via a container
 	- Highly recommend putting this honeypot behind an application loadbalancer of some kind.
+# How are requests logged?
+
+All requests are logged using NLog and formatted in JSON compliant with RFC 8259. The output value is formatted in JSON and includes the following elements:
+- Request time => DateTime
+- Request host => string
+- Request method => string
+- Request path => string
+- Request headers => Dictionary[]
+- Request body => string*
+
+\* The body may be serialized differently depending on what is sent to the honeypot.
 
 # Contributing
 If you want to contribute to this open-source project, by all means please do! I will to consider any ideas that people would like to include in this repo. 
