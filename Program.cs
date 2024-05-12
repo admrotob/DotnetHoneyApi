@@ -1,32 +1,51 @@
+using NLog;
+using NLog.Web;
 using DotnetHoneyApi.Authentication;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-
-var app = builder.Build();
+var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Debug("init main");
+try
 {
-    app.MapControllers();
-    app.UseMiddleware<TrapperMiddleware>();
+    var builder = WebApplication.CreateBuilder(args);
 
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
+    // Add services to the container.
+
+    builder.Services.AddControllers();
+    builder.Host.UseNLog();
+
+    var app = builder.Build();
     {
-        app.UseDeveloperExceptionPage();
-        app.UseHsts();
+        app.MapControllers();
+        app.UseMiddleware<TrapperMiddleware>();
+
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+            app.UseHsts();
+        }
+        else
+        {
+            app.UseHsts();
+        }
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        // Map health check endpoint to allow administrators to deploy in cloud platforms.
+        app.MapGet("/healthz", () => "OK");
+
+        app.Run();
     }
-    else
-    {
-        app.UseHsts();
-    }
-    app.UseHttpsRedirection();
-
-    app.UseAuthorization();
-
-    // Map health check endpoint to allow administrators to deploy in cloud platforms.
-    app.MapGet("/healthz", () => "OK");
-
-    app.Run();
+}
+catch (Exception exception)
+{
+    // Log setup errors with NLog
+    logger.Error(exception, "Stopped program execution because of ecxeption");
+    throw;
+}
+finally
+{
+    // Clean-up your damn mess NLog
+    NLog.LogManager.Shutdown();
 }

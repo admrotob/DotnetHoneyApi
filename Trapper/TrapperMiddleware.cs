@@ -1,24 +1,25 @@
 ﻿using Microsoft.Extensions.Logging;
 using System.Net.Http.Headers;
 using System.Text;
+using Newtonsoft.Json;
+using DotnetHoneyApi.Models;
+using NLog;
 
 namespace DotnetHoneyApi.Authentication
 {
     public class TrapperMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ILoggerFactory _loggerFactory;
+        private readonly ILogger<TrapperMiddleware> _logger;
 
-        public TrapperMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        public TrapperMiddleware(RequestDelegate next, ILogger<TrapperMiddleware> logger)
         {
             _next = next;
-            _loggerFactory = loggerFactory;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            var _logger = _loggerFactory.CreateLogger<TrapperMiddleware>();
-
             var host = (context.Request.Host).ToString();
             var method = context.Request.Method;
             var path = context.Request.Path;
@@ -74,23 +75,16 @@ namespace DotnetHoneyApi.Authentication
             var time = DateTime.UtcNow;
 
             var headerArray = headers.ToArray();
-            string headersJson = "{";
-            for(int i = 0; i < headers.Count(); i++)
-            {
-                headersJson += $"'{headerArray[i].Key}':'{headerArray[i].Value}',";
-            }
-            headersJson += "}";
+            //string headersString = JsonConvert.SerializeObject(headerArray);
 
-            string logJson = "{";
+            var log = new LogObject();
+            log.RequestTime = time;
+            log.RequestBody = body;
+            log.RequestHeaders = headerArray;
+            log.RequestMethod = method;
+            log.RequestPath = path;
 
-            // Add current time
-            logJson += $"'time':'{time}',";
-            logJson += $"'host':'{host}',";
-            logJson += $"'method':'{method}',";
-            logJson += $"'path':'{path}',";
-            logJson += $"'headers':{headersJson},";
-            logJson += $"'body':'{body}'";
-            logJson += "}";
+            string logJson = JsonConvert.SerializeObject(log);
 
             return logJson;
         }
