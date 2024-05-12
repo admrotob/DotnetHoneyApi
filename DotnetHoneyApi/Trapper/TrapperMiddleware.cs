@@ -20,10 +20,24 @@ namespace DotnetHoneyApi.Authentication
 
         public async Task Invoke(HttpContext context)
         {
-            var src_ip = (context.Connection.RemoteIpAddress).ToString();
-            var src_port = (context.Connection.RemotePort).ToString();
-            var target_ip = (context.Connection.LocalIpAddress).ToString();
-            var target_port = (context.Connection.LocalPort).ToString();
+            string src_ip, src_port, target_ip, target_port;
+
+            // Test server is NOT running so we have IP addresses in use
+            if(context.Connection.LocalIpAddress != null && context.Connection.RemoteIpAddress != null)
+            {
+                src_ip = (context.Connection.RemoteIpAddress).ToString();
+                src_port = (context.Connection.RemotePort).ToString();
+                target_ip = (context.Connection.LocalIpAddress).ToString();
+                target_port = (context.Connection.LocalPort).ToString();
+            }
+            else // Test server is running so we do not have IP addresses in use
+            {
+                src_ip = "";
+                src_port = "";
+                target_ip = "";
+                target_port = "";
+            }
+
             var host = (context.Request.Host).ToString();
             var method = context.Request.Method;
             var path = context.Request.Path;
