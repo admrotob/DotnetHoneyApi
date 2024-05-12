@@ -75,7 +75,6 @@ namespace DotnetHoneyApi.Authentication
             var time = DateTime.UtcNow;
 
             var headerArray = headers.ToArray();
-            //string headersString = JsonConvert.SerializeObject(headerArray);
 
             var log = new LogObject();
             log.RequestTime = time;
