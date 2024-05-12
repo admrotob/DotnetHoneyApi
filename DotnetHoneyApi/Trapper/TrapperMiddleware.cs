@@ -20,6 +20,10 @@ namespace DotnetHoneyApi.Authentication
 
         public async Task Invoke(HttpContext context)
         {
+            var src_ip = (context.Connection.RemoteIpAddress).ToString();
+            var src_port = (context.Connection.RemotePort).ToString();
+            var target_ip = (context.Connection.LocalIpAddress).ToString();
+            var target_port = (context.Connection.LocalPort).ToString();
             var host = (context.Request.Host).ToString();
             var method = context.Request.Method;
             var path = context.Request.Path;
@@ -31,7 +35,7 @@ namespace DotnetHoneyApi.Authentication
             var body = objects.Item1;
             context.Request.Body = objects.Item2;
 
-            var logJson = await CreateLogJson(host, method, path, body, headers);
+            var logJson = await CreateLogJson(host, method, path, body, src_ip, src_port, target_ip, target_port, headers);
 
             // Authorize health check requests because they need to be allowed to pass through
             switch(context.Request.Path)
@@ -70,7 +74,9 @@ namespace DotnetHoneyApi.Authentication
             return (bodyAsText,clonedBodyObject);
         }
 
-        private async Task<string> CreateLogJson(string host, string method, string path, string body, IHeaderDictionary headers)
+        private async Task<string> CreateLogJson(string host, string method, string path, string body, 
+                                                 string src_ip, string src_port, string target_ip, 
+                                                 string target_port, IHeaderDictionary headers)
         {
             var time = DateTime.UtcNow;
 
@@ -79,6 +85,11 @@ namespace DotnetHoneyApi.Authentication
             var log = new LogObject();
             log.RequestTime = time;
             log.RequestBody = body;
+            log.RequestHost = host;
+            log.RequestSourceIp = src_ip;
+            log.RequestSourcePort = src_port;
+            log.RequestTargetIp = target_ip;
+            log.RequestTargetPort = target_port;
             log.RequestHeaders = headerArray;
             log.RequestMethod = method;
             log.RequestPath = path;
