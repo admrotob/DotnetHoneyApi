@@ -17,12 +17,12 @@ try
     {
         app.MapControllers();
         app.UseMiddleware<TrapperMiddleware>();
+        app.UseHsts();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
-            app.UseHsts();
             app.UseHttpsRedirection();
         }
 
