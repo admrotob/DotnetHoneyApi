@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.HttpLogging;
 using DotnetHoneyApi.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,21 +6,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-builder.Services.AddHttpLogging(logging =>
-{
-    logging.LoggingFields = HttpLoggingFields.All;
-    logging.RequestHeaders.Add("sec-ch-ua");
-    logging.MediaTypeOptions.AddText("application/json");
-    logging.RequestBodyLogLimit = 4096;
-    logging.ResponseBodyLogLimit = 4096;
-    logging.CombineLogs = true;
-});
-
 var app = builder.Build();
 {
     app.MapControllers();
-    app.UseHttpLogging();
-    app.UseMiddleware<ApiKeyAuthMiddleware>();
+    app.UseMiddleware<TrapperMiddleware>();
 
     // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
